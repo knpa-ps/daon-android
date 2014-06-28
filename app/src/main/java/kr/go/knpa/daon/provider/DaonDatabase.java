@@ -15,7 +15,7 @@ public class DaonDatabase extends SQLiteOpenHelper {
         String DEPARTMENTS = "departments";
 
         String OFFICERS_JOIN_DEPARTMENTS = "officers left join departments" +
-                " on departments.department_id = officers.department_id";
+                " on departments.department_id = officers.officer_department_id";
     }
 
     private static final String DATABASE_NAME = "daon.db";

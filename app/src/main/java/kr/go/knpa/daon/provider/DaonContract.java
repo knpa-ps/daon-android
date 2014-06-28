@@ -16,10 +16,10 @@ public class DaonContract {
 
     interface OfficersColumns {
         String OFFICER_ID = "officer_id";
-        String OFFICER_NAME = "name";
-        String OFFICER_RANK = "rank";
-        String OFFICER_ROLE = "role";
-        String OFFICER_DEPARTMENT_ID = "department_id";
+        String OFFICER_NAME = "officer_name";
+        String OFFICER_RANK = "officer_rank";
+        String OFFICER_ROLE = "officer_role";
+        String OFFICER_DEPARTMENT_ID = "officer_department_id";
         String OFFICER_PHONE = "phone";
         String OFFICER_CELLPHONE = "cellphone";
         String OFFICER_STARRED = "starred";
@@ -27,9 +27,9 @@ public class DaonContract {
 
     interface DepartmentsColumns {
         String DEPARTMENT_ID = "department_id";
-        String DEPARTMENT_NAME = "name";
-        String DEPARTMENT_PARENT_ID = "parent_id";
-        String DEPARTMENT_FULL_NAME = "full_name";
+        String DEPARTMENT_NAME = "department_name";
+        String DEPARTMENT_PARENT_ID = "department_parent_id";
+        String DEPARTMENT_FULL_NAME = "department_full_name";
     }
 
     public static final String CONTENT_AUTHORITY = "kr.go.knpa.daon.provider";

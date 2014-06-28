@@ -33,9 +33,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MyActivity"
-            android:label="@string/title_activity_my" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".ui.SetupActivity"
+            android:label="@string/title_activity_setup" >
         </activity>
+
     </application>
 
 </manifest>

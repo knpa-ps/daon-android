@@ -27,7 +27,7 @@ public class SyncIntentService extends IntentService {
     public static final int STATE_SUCCESS = 101;
     public static final String ACTION_START_SYNC = "kr.go.knpa.daon.action.START_SYNC";
     public static final String ACTION_SYNC_STATE_CHANGED =
-            "kr.go.knpa.daon.actino.SYNC_STATE_CHANGED";
+            "kr.go.knpa.daon.action.SYNC_STATE_CHANGED";
     private static final String TAG = makeLogTag(SyncIntentService.class);
 
     public SyncIntentService() {

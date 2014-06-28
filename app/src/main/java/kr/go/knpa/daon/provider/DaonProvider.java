@@ -74,6 +74,7 @@ public class DaonProvider extends ContentProvider {
             case DEPARTMENTS_ID_OFFICERS: {
                 String deptId = uri.getPathSegments().get(1);
                 builder.table(Tables.OFFICERS_JOIN_DEPARTMENTS)
+                        .mapToTable(BaseColumns._ID, Tables.OFFICERS)
                         .where(DaonContract.Officers.OFFICER_DEPARTMENT_ID+"=?", deptId);
                 break;
             }
@@ -81,14 +82,12 @@ public class DaonProvider extends ContentProvider {
                 String officerId = uri.getLastPathSegment();
                 builder.table(Tables.OFFICERS_JOIN_DEPARTMENTS)
                         .mapToTable(BaseColumns._ID, Tables.OFFICERS)
-                        .mapToTable(DaonContract.Officers.DEPARTMENT_ID, Tables.OFFICERS)
                         .where(DaonContract.Officers.OFFICER_ID+"=?", officerId);
                 break;
             }
             case OFFICERS: {
                 builder.table(Tables.OFFICERS_JOIN_DEPARTMENTS)
-                        .mapToTable(BaseColumns._ID, Tables.OFFICERS)
-                        .mapToTable(DaonContract.Officers.DEPARTMENT_ID, Tables.OFFICERS);
+                        .mapToTable(BaseColumns._ID, Tables.OFFICERS);
                 break;
             }
             case DEPARTMENTS: {
@@ -99,7 +98,7 @@ public class DaonProvider extends ContentProvider {
                 throw new UnsupportedOperationException("unknown uri for match="+match);
         }
 
-        Cursor c = builder.query(db, projection, sortOrder);
+        Cursor c = builder.where(selection, selectionArgs).query(db, projection, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }
@@ -135,6 +134,8 @@ public class DaonProvider extends ContentProvider {
                 throw new UnsupportedOperationException("unknown uri for match="+match);
         }
 
+        notifyChange(uri);
+
         return newUri;
     }
 
@@ -143,7 +144,25 @@ public class DaonProvider extends ContentProvider {
                       String[] selectionArgs) {
         LOGV(TAG, "update(uri=" + uri + ", values=" + values.toString() + ")");
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        int match = sUriMatcher.match(uri);
+
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        SelectionBuilder builder = new SelectionBuilder();
+        switch (match) {
+            case OFFICERS: {
+                builder.table(Tables.OFFICERS);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("unknown uri for match="+match);
+        }
+        int retVal = builder.where(selection, selectionArgs).update(db, values);
+        notifyChange(uri);
+        return retVal;
+    }
+
+    private void notifyChange(Uri uri) {
+        getContext().getContentResolver().notifyChange(uri, null, false);
     }
 
     @Override
@@ -166,6 +185,8 @@ public class DaonProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("unknown uri for match="+match);
         }
+
+        notifyChange(uri);
 
         return builder.where(selection, selectionArgs).delete(db);
     }
