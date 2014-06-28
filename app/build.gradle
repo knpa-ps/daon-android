@@ -1,6 +1,14 @@
 apply plugin: 'android'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'daon-android'
+            keyPassword 'vhtkdgbrk'
+            storeFile file('knpa.keystore')
+            storePassword 'vhtkdgbrk'
+        }
+    }
     compileSdkVersion 19
     buildToolsVersion '19.1.0'
     defaultConfig {
@@ -12,8 +20,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     productFlavors {
@@ -25,4 +32,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.android.support:support-v4:19.+'
+    compile 'com.google.android.gms:play-services:4.4.52'
 }

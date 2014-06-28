@@ -13,7 +13,7 @@ import java.util.Set;
 import kr.go.knpa.daon.io.api.Api;
 import kr.go.knpa.daon.io.model.OfficerReponse;
 import kr.go.knpa.daon.provider.DaonContract.Officers;
-import kr.go.knpa.daon.util.DateTimeUtils;
+import kr.go.knpa.daon.util.UIUtils;
 import kr.go.knpa.daon.util.Lists;
 
 public class OfficersHandler {
@@ -55,7 +55,7 @@ public class OfficersHandler {
                     .withValue(Officers.OFFICER_ROLE, o.getRole())
                     .withValue(Officers.OFFICER_PHONE, o.getPhone())
                     .withValue(Officers.OFFICER_CELLPHONE, o.getCellphone())
-                    .withValue(Officers.UPDATED_AT, DateTimeUtils.parse(o.getUpdatedAt()))
+                    .withValue(Officers.UPDATED_AT, UIUtils.parse(o.getUpdatedAt()))
                     .withValue(Officers.OFFICER_STARRED, starred);
 
             batch.add(builder.build());

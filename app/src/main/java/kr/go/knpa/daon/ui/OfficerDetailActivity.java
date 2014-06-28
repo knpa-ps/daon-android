@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import kr.go.knpa.daon.R;
 import kr.go.knpa.daon.provider.DaonContract.Officers;
+import kr.go.knpa.daon.util.UIUtils;
 
 public class OfficerDetailActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{

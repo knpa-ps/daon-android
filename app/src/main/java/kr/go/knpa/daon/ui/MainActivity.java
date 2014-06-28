@@ -1,6 +1,10 @@
 package kr.go.knpa.daon.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -124,4 +128,25 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener 
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        new DialogFragment() {
+
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
+                        .setIcon(R.drawable.ic_launcher)
+                        .setTitle(R.string.confirm_exit_title)
+                        .setMessage(R.string.confirm_exit_message)
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+                return b.create();
+            }
+        }.show(getSupportFragmentManager(), "confirm");
+    }
 }

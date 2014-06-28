@@ -10,7 +10,7 @@ import java.util.List;
 import kr.go.knpa.daon.io.api.Api;
 import kr.go.knpa.daon.io.model.DepartmentResponse;
 import kr.go.knpa.daon.provider.DaonContract.Departments;
-import kr.go.knpa.daon.util.DateTimeUtils;
+import kr.go.knpa.daon.util.UIUtils;
 import kr.go.knpa.daon.util.Lists;
 
 public class DepartmentsHandler {
@@ -38,7 +38,7 @@ public class DepartmentsHandler {
                     .withValue(Departments.DEPARTMENT_FULL_NAME, o.getFullName())
                     .withValue(Departments.DEPARTMENT_NAME, o.getName())
                     .withValue(Departments.DEPARTMENT_PARENT_ID, o.getParentId())
-                    .withValue(Departments.UPDATED_AT, DateTimeUtils.parse(o.getUpdatedAt()));
+                    .withValue(Departments.UPDATED_AT, UIUtils.parse(o.getUpdatedAt()));
 
             batch.add(builder.build());
         }

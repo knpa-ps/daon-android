@@ -1,8 +1,11 @@
-package kr.go.knpa.daon.ui;
+package kr.go.knpa.daon.util;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class UIUtils {
 
@@ -17,5 +20,18 @@ public class UIUtils {
         sendIntent.putExtra("address", phoneNumber); // 받는사람 번호
         sendIntent.setType("vnd.android-dir/mms-sms");
         c.startActivity(sendIntent);
+    }
+
+    public static long parse(String str, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        try {
+            return sdf.parse(str).getTime();
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    public static long parse(String str) {
+        return parse(str, "yyyy-MM-dd HH:mm:ss");
     }
 }
