@@ -2,8 +2,8 @@ package kr.go.knpa.daon.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -114,13 +114,9 @@ public class DeptTreeListFragment extends ListFragment
         if (item.type == Item.TYPE_DEPT) {
             navigateDown(item.id);
         } else {
-            // TODO start detail activity
-            boolean starred = !(Boolean) item.data.get("starred");
-            ContentValues val = new ContentValues();
-            val.put(Officers.OFFICER_STARRED, starred);
-            getActivity().getContentResolver()
-                    .update(Officers.CONTENT_URI, val, Officers.OFFICER_ID+"=?",
-                            new String[] {String.valueOf(item.id)});
+            Intent intent = new Intent(getActivity(), OfficerDetailActivity.class);
+            intent.putExtra(OfficerDetailActivity.EXTRA_OFFICER_ID, item.id);
+            startActivity(intent);
         }
     }
 

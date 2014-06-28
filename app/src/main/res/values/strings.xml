@@ -17,5 +17,6 @@
     <string name="sync_success">동기화가 완료되었습니다.</string>
     <string name="parent_department">상위 부서</string>
     <string name="empty_favorite">즐겨찾기가 비어있습니다.</string>
+    <string name="action_star">즐겨찾기</string>
 
 </resources>

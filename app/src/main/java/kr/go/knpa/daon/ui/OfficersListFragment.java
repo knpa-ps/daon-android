@@ -1,6 +1,7 @@
 package kr.go.knpa.daon.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -42,7 +43,11 @@ public class OfficersListFragment extends ListFragment implements
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
+        mAdapter.getCursor().moveToPosition(position);
+        int officerId = mAdapter.getCursor().getInt(OfficersQuery.OFFICER_ID);
+        Intent intent = new Intent(getActivity(), OfficerDetailActivity.class);
+        intent.putExtra(OfficerDetailActivity.EXTRA_OFFICER_ID, officerId);
+        startActivity(intent);
     }
 
     @Override

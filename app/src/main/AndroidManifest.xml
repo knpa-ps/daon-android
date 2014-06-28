@@ -33,11 +33,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/AppTheme.NoActionBar"
             android:name=".ui.SetupActivity"
-            android:label="@string/title_activity_setup" >
+            android:label="@string/title_activity_setup"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-
+        <activity
+            android:name=".ui.OfficerDetailActivity"
+            android:label="@string/title_activity_officer_detail"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="kr.go.knpa.daon.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
