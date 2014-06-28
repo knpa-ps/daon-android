@@ -1,6 +1,5 @@
 package kr.go.knpa.daon.provider;
 
-import android.graphics.PathDashPathEffect;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -12,7 +11,7 @@ public class DaonContract {
     }
 
     interface SyncColumns {
-        String UPDATED = "updated";
+        String UPDATED_AT = "updated";
     }
 
     interface OfficersColumns {

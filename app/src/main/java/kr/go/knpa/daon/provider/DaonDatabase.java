@@ -29,7 +29,7 @@ public class DaonDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table "+Tables.OFFICERS+" (" +
                 BaseColumns._ID + " integer primary key autoincrement," +
-                SyncColumns.UPDATED + " integer not null," +
+                SyncColumns.UPDATED_AT + " integer not null," +
                 OfficersColumns.OFFICER_ID + " integer not null unique on conflict replace," +
                 OfficersColumns.OFFICER_NAME + " text not null default ''," +
                 OfficersColumns.OFFICER_RANK + " text not null default ''," +
@@ -42,10 +42,10 @@ public class DaonDatabase extends SQLiteOpenHelper {
 
         db.execSQL("create table "+Tables.DEPARTMENTS+" (" +
                 BaseColumns._ID + " integer primary key autoincrement," +
-                SyncColumns.UPDATED + " integer not null," +
+                SyncColumns.UPDATED_AT + " integer not null," +
                 DepartmentsColumns.DEPARTMENT_ID + " integer not null unique on conflict replace," +
                 DepartmentsColumns.DEPARTMENT_NAME + " text not null default ''," +
-                DepartmentsColumns.DEPARTMENT_PARENT_ID + "integer," +
+                DepartmentsColumns.DEPARTMENT_PARENT_ID + " integer," +
                 DepartmentsColumns.DEPARTMENT_FULL_NAME + " text not null default ''" +
                 ")");
     }
