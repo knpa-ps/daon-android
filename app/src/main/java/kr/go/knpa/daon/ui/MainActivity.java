@@ -2,7 +2,11 @@ package kr.go.knpa.daon.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,13 +15,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import kr.go.knpa.daon.R;
+import kr.go.knpa.daon.io.api.Api;
+import kr.go.knpa.daon.io.model.VersionResponse;
+import kr.go.knpa.daon.util.GCMUtils;
+
+import static kr.go.knpa.daon.util.LogUtils.LOGE;
+import static kr.go.knpa.daon.util.LogUtils.makeLogTag;
 
 public class MainActivity extends BaseActivity implements ActionBar.TabListener {
 
+    private static final String TAG = makeLogTag(MainActivity.class);
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -148,5 +163,113 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener 
                 return b.create();
             }
         }.show(getSupportFragmentManager(), "confirm");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_update_app) {
+            checkUpdate();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void checkUpdate() {
+        new AsyncTask<Void, Void, Void>() {
+            DialogFragment progress;
+            boolean needUpdate;
+            public VersionResponse versionResponse;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progress = new DialogFragment() {
+
+                    @Override
+                    public Dialog onCreateDialog(Bundle savedInstanceState) {
+                        return new ProgressDialog.Builder(getActivity())
+                                .setTitle(R.string.update_app_title)
+                                .setIcon(R.drawable.ic_launcher)
+                                .setMessage(R.string.update_app_message)
+                                .create();
+                    }
+                };
+
+                progress.show(getSupportFragmentManager(), "progress");
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    versionResponse = new Api().checkVersion();
+
+                    if (versionResponse == null) {
+                        needUpdate = false;
+                        return null;
+                    }
+
+                    int currentVersion = GCMUtils.getAppVersion(MainActivity.this);
+
+                    needUpdate = currentVersion < versionResponse.getCode();
+
+                } catch (IOException e) {
+                    LOGE(TAG, "io exception during version check", e);
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                if (isDestroyed()) {
+                    return;
+                }
+
+                progress.dismiss();
+
+                if (needUpdate) {
+                    confirmDownload();
+                } else {
+                    Toast.makeText(MainActivity.this, R.string.no_update, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            private void confirmDownload() {
+                new DialogFragment() {
+                    @Override
+                    public Dialog onCreateDialog(Bundle savedInstanceState) {
+                        return new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.update_app_title)
+                                .setMessage(R.string.update_available)
+                                .setIcon(R.drawable.ic_launcher)
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        download();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .create();
+                    }
+                }.show(getSupportFragmentManager(), "confirm");
+
+            }
+
+            private void download() {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(versionResponse.getDownloadUrl()));
+                startActivity(browserIntent);
+            }
+        }.execute();
     }
 }

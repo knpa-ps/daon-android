@@ -14,6 +14,7 @@ import java.util.List;
 
 import kr.go.knpa.daon.io.model.DepartmentResponse;
 import kr.go.knpa.daon.io.model.OfficerReponse;
+import kr.go.knpa.daon.io.model.VersionResponse;
 
 public class Api {
 
@@ -37,7 +38,6 @@ public class Api {
     }
 
     public List<DepartmentResponse> departments() throws IOException {
-
 
         String url = "http://54.250.242.100/daon/public/api/departments";
 
@@ -67,5 +67,21 @@ public class Api {
         if (!r.isSuccessful()) {
             throw new IOException("response is not successful. "+r);
         }
+    }
+
+    public VersionResponse checkVersion() throws IOException {
+
+        String url = "http://54.250.242.100/daon/public/api/check-version";
+
+        Request req = new Request.Builder().url(url).build();
+
+        Response r = sClient.newCall(req).execute();
+
+        if (!r.isSuccessful()) {
+            throw new IOException("response is not successful. "+r);
+        }
+
+        Gson gson = new Gson();
+        return gson.fromJson(r.body().string(), VersionResponse.class);
     }
 }
