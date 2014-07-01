@@ -1,8 +1,11 @@
 package kr.go.knpa.daon.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -47,6 +50,17 @@ public class LoginActivity extends ActionBarActivity {
                 }
             });
         } else {
+            new DialogFragment() {
+                @Override
+                public Dialog onCreateDialog(Bundle savedInstanceState) {
+                    return new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.set_password_title)
+                            .setMessage(R.string.set_password_message)
+                            .setIcon(R.drawable.ic_launcher)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .create();
+                }
+            }.show(getSupportFragmentManager(), "alert");
             mPasswordConfirm.setVisibility(View.VISIBLE);
             mPasswordConfirm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
