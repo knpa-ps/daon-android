@@ -5,11 +5,14 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import kr.go.knpa.daon.R;
 
@@ -33,20 +36,40 @@ public class LoginActivity extends ActionBarActivity {
 
         if (mPasswordSet) {
             mPasswordConfirm.setVisibility(View.GONE);
+            mPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        onSubmit();
+                        return true;
+                    }
+                    return false;
+                }
+            });
         } else {
             mPasswordConfirm.setVisibility(View.VISIBLE);
+            mPasswordConfirm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        onSubmit();
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
 
         findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSubmit((Button) v);
+                onSubmit();
             }
         });
 
     }
 
-    private void onSubmit(Button v) {
+    private void onSubmit() {
         if (mPasswordSet) {
             if (mPassword.getText().length() != 4) {
                 mPassword.setError(getString(R.string.error_password_length));

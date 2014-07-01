@@ -2,12 +2,14 @@ package kr.go.knpa.daon.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -255,7 +257,7 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener 
                                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        download();
+                                        startUpdateActivity();
                                     }
                                 })
                                 .setNegativeButton(android.R.string.cancel, null)
@@ -265,10 +267,11 @@ public class MainActivity extends BaseActivity implements ActionBar.TabListener 
 
             }
 
-            private void download() {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(versionResponse.getDownloadUrl()));
-                startActivity(browserIntent);
+            private void startUpdateActivity() {
+
+                Intent intent = new Intent(MainActivity.this, ApkUpdateActivity.class);
+                intent.setData(Uri.parse(versionResponse.getDownloadUrl()));
+                startActivity(intent);
             }
         }.execute();
     }

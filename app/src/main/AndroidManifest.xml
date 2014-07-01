@@ -69,15 +69,25 @@
         </service>
 
         <activity
-            android:theme="@style/AppTheme.NoActionBar"
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="stateAlwaysVisible|adjustPan">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.ApkUpdateActivity"
+            android:label="@string/title_activity_apk_update"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="kr.go.knpa.daon.ui.MainActivity" />
+
         </activity>
     </application>
 
