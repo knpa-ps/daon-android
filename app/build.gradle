@@ -1,4 +1,4 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
@@ -15,8 +15,8 @@ android {
         applicationId 'kr.go.knpa.daon'
         minSdkVersion 10
         targetSdkVersion 19
-        versionCode 1
-        versionName '1.0'
+        versionCode 2
+        versionName '1.1'
     }
     buildTypes {
         release {
@@ -30,10 +30,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:19.+'
     compile 'com.google.android.gms:play-services:4.4.52'
 }
