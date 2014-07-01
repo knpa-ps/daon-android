@@ -17,5 +17,12 @@
     <string name="update_app_message">버전을 확인하는 중입니다.\n잠시만 기다려주세요..</string>
     <string name="no_update">최신 버전입니다.</string>
     <string name="update_available">새 버전이 있습니다.\n다운로드 후 알림 창에서 클릭하여 설치해주세요.</string>
+    <string name="wait">잠시만 기다려주세요…</string>
+    <string name="password">비밀번호</string>
+    <string name="password_confirmation">비밀번호 확인</string>
+    <string name="title_activity_login">다온</string>
+    <string name="error_password_length">4자리 숫자를 입력해주세요</string>
+    <string name="error_wrong_password">비밀번호가 틀렸습니다.</string>
+    <string name="error_password_not_match">같은 비밀번호를 입력해주세요</string>
 
 </resources>

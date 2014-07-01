@@ -8,10 +8,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 
 import kr.go.knpa.daon.util.GCMUtils;
+import kr.go.knpa.daon.util.PlayServiceUtils;
 
 public abstract class BaseActivity extends ActionBarActivity {
 
-    public static final String PREF_SETUP_COMPLETE = "pref_setup_complete";
+    public static final String PREF_SYNC_COMPLETE = "pref_sync_complete";
+    public static final String PREF_PASSWORD_SET = "pref_password_set";
+
     private boolean setupCompleted;
 
     @Override
@@ -30,7 +33,17 @@ public abstract class BaseActivity extends ActionBarActivity {
     public boolean isSetupCompleted() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        return pref.getBoolean(PREF_SETUP_COMPLETE, false) &&
-                !TextUtils.isEmpty(GCMUtils.getRegistrationId(this));
+        boolean setup = pref.getBoolean(PREF_SYNC_COMPLETE, false);
+
+        if (PlayServiceUtils.checkPlayServiceAvailable(this)
+                && TextUtils.isEmpty(GCMUtils.getRegistrationId(this))) {
+            setup = false;
+        }
+
+        if (setup) {
+            setup = pref.getBoolean(PREF_PASSWORD_SET, false);
+        }
+
+        return setup;
     }
 }

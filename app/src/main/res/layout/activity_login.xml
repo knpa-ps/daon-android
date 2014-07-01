@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#000"
     tools:context="kr.go.knpa.daon.ui.SetupActivity"
-    android:weightSum="2"
+    android:weightSum="3"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,11 +22,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,6 +46,39 @@
                 android:textAppearance="?android:attr/textAppearanceMediumInverse"
                 android:text="@string/wait"/>
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/password"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="@dimen/gap"
+            android:minLines="4"
+            android:maxLength="4"
+            android:hint="@string/password"
+            android:inputType="numberPassword"
+            android:background="@drawable/bg_edittext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/gap" />
+
+        <EditText
+            android:layout_marginBottom="@dimen/gap"
+            android:id="@+id/password_confirmation"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="@dimen/gap"
+            android:minLines="4"
+            android:maxLength="4"
+            android:hint="@string/password_confirmation"
+            android:inputType="numberPassword"
+            android:background="@drawable/bg_edittext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok" />
+
     </LinearLayout>
 
 </LinearLayout>

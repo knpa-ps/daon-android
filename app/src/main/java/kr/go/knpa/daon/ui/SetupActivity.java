@@ -1,14 +1,15 @@
 package kr.go.knpa.daon.ui;
 
+import static kr.go.knpa.daon.util.LogUtils.makeLogTag;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
@@ -18,10 +19,11 @@ import kr.go.knpa.daon.io.api.Api;
 import kr.go.knpa.daon.receiver.SyncStateChangeReceiver;
 import kr.go.knpa.daon.service.SyncIntentService;
 import kr.go.knpa.daon.util.GCMUtils;
+import kr.go.knpa.daon.util.PlayServiceUtils;
 
-import static kr.go.knpa.daon.util.LogUtils.makeLogTag;
 
 public class SetupActivity extends ActionBarActivity {
+
     private static final String SENDER_ID = "238410544235";
     private static final String TAG = makeLogTag(SetupActivity.class);
     private GoogleCloudMessaging gcm;
@@ -43,9 +45,10 @@ public class SetupActivity extends ActionBarActivity {
             if (isDestroyed()) {
                 return;
             }
+
             PreferenceManager.getDefaultSharedPreferences(SetupActivity.this)
                     .edit()
-                    .putBoolean(BaseActivity.PREF_SETUP_COMPLETE, true)
+                    .putBoolean(BaseActivity.PREF_SYNC_COMPLETE, true)
                     .commit();
 
             Toast.makeText(SetupActivity.this, R.string.sync_success, Toast.LENGTH_SHORT).show();
@@ -59,11 +62,12 @@ public class SetupActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+
         registerReceiver(mReceiver, mReceiver.getIntentFilter());
         SyncIntentService.startSync(this);
 
         // Check device for Play Services APK.
-        if (checkPlayServices()) {
+        if (PlayServiceUtils.checkPlayServiceAvailable(this)) {
             gcm = GoogleCloudMessaging.getInstance(this);
             regid = GCMUtils.getRegistrationId(this);
 
@@ -71,6 +75,11 @@ public class SetupActivity extends ActionBarActivity {
                 registerInBackground();
             }
         }
+    }
+
+    private boolean isPasswordSet() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(BaseActivity.PREF_PASSWORD_SET, false);
     }
 
     private void registerInBackground() {
@@ -106,23 +115,6 @@ public class SetupActivity extends ActionBarActivity {
                 return msg;
             }
         }.execute(null, null, null);
-    }
-
-    // You need to do the Play Services APK check here too.
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkPlayServices();
-    }
-
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        return resultCode == ConnectionResult.SUCCESS;
     }
 
     @Override
